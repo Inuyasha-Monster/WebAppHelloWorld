@@ -8,6 +8,8 @@ namespace WebAppHelloWorld.Controllers
 {
     public class HomeController : Controller
     {
+        //public static List<Department> GUID ChildDepartment有戏
+
         // GET: Home
         public ActionResult Index()
         {
@@ -15,7 +17,7 @@ namespace WebAppHelloWorld.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetDepartment(int limit, int offset, string departmentname, string statu, string search, string order, string sort)
+        public ActionResult GetChildrenMenu(string strParentID)
         {
             var lstRes = new List<Department>();
             for (var i = 0; i < 100; i++)
@@ -26,6 +28,29 @@ namespace WebAppHelloWorld.Controllers
                 oModel.Level = i.ToString();
                 oModel.Desc = "暂无描述信息";
                 oModel.ParentName = "父级部门销售部" + i;
+                //ParentID
+                oModel.ParentID = i.ToString();
+                lstRes.Add(oModel);
+            }
+            lstRes = lstRes.Where(x => x.ID == strParentID).ToList();
+            return Json(lstRes, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetDepartment(int limit, int offset, string departmentname, string statu, string search, string order, string sort)
+        {
+            var lstRes = new List<Department>();
+            for (var i = 0; i < 100; i++)
+            {
+                var guid = Guid.NewGuid().ToString();
+                var oModel = new Department();
+                oModel.ID = guid;
+                oModel.Name = "销售部" + i;
+                oModel.Level = i.ToString();
+                oModel.Desc = "暂无描述信息";
+                oModel.ParentName = "父级部门销售部" + i;
+                //ParentID
+                oModel.ParentID = guid;
                 lstRes.Add(oModel);
             }
             lstRes = lstRes.Where(x => departmentname == null || x.Name.Contains(departmentname)).Where(x => statu == null || x.Desc.Contains(statu)).Where(x => search == null || x.Name.Contains(search)).ToList();
@@ -65,5 +90,6 @@ namespace WebAppHelloWorld.Controllers
         public string Level { get; internal set; }
         public string Name { get; internal set; }
         public string ParentName { get; internal set; }
+        public string ParentID { get; set; }
     }
 }

@@ -13,6 +13,53 @@
 
 var TableInit = function () {
     var oTableInit = new Object();
+
+    //index：父表当前行的行索引。
+    //row：父表当前行的Json数据对象。
+    //$detail：当前行下面创建的新行里面的td对象。
+    //第三个参数尤其重要，因为生成的子表的table在装载在$detail对象里面的。bootstrap table为我们生成了$detail这个对象，然后我们只需要往它里面填充我们想要的table即可。
+
+    oTableInit.InitSubTable = function (index, row, $detail) {
+        var parentID = row.ParentID;
+        var cur_table = $detail.html('<table></table>').find('table');
+        $(cur_table).bootstrapTable({
+            url: '/Home/GetChildrenMenu',
+            method: 'get',
+            queryParams: { strParentID: parentID },
+            ajaxOptions: { strParentID: parentID },
+            clickToSelect: true,
+            detailView: true,//父子表
+            uniqueId: "ID",
+            pageSize: 10,
+            pageList: [10, 25, 50],
+            columns: [{
+                checkbox: true
+            }, {
+                field: 'ID',
+                title: '部门编号'
+            }, {
+                field: 'Name',
+                title: '部门名字'
+            }, {
+                field: 'ParentName',
+                title: '上级部门名字'
+            }, {
+                field: 'ParentID',
+                title: '上级部门ID'
+            }, {
+                field: 'Desc',
+                title: '描述'
+            }, {
+                field: 'Level',
+                title: '部门级别'
+            }, ],
+            //无线循环取子表，直到子表里面没有记录
+            onExpandRow: function (index, row, $Subdetail) {
+                oTableInit.InitSubTable(index, row, $Subdetail);
+            }
+        });
+    }
+
     //初始化Table
     oTableInit.Init = function () {
         $('#tb_departments').bootstrapTable({
@@ -41,11 +88,11 @@ var TableInit = function () {
             classes: 'table table-hover table-bordered',
             showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
-            detailView: false,                  //是否显示父子表
+            detailView: true,                  //是否显示父子表
             paginationLoop: false,
             idField: 'ID',
             silentSort: false,
-            sortName:'Name',
+            sortName: 'Name',
             columns: [{
                 checkbox: true
             }, {
@@ -61,12 +108,19 @@ var TableInit = function () {
                 field: 'ParentName',
                 title: '上级部门'
             }, {
+                field: 'ParentID',
+                title: '上级部门ID'
+            }, {
                 field: 'Level',
                 title: '部门级别'
             }, {
                 field: 'Desc',
                 title: '描述'
-            }, ]
+            }, ],
+            //注册加载子表的事件。注意下这里的三个参数！
+            onExpandRow: function (index, row, $detail) {
+                oTableInit.InitSubTable(index, row, $detail);
+            }
         });
     };
 
