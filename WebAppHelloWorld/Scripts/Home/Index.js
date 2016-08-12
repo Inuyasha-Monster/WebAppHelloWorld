@@ -22,7 +22,7 @@ var TableInit = function () {
             striped: true,                      //是否显示行间隔色
             cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             pagination: true,                   //是否显示分页（*）
-            sortable: false,                    //是否启用排序
+            sortable: true,                    //是否启用排序
             sortOrder: "asc",                   //排序方式
             queryParams: oTableInit.queryParams,//传递参数（*）
             sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
@@ -44,15 +44,19 @@ var TableInit = function () {
             detailView: false,                  //是否显示父子表
             paginationLoop: false,
             idField: 'ID',
+            silentSort: false,
+            sortName:'Name',
             columns: [{
                 checkbox: true
             }, {
                 field: 'ID',
-                title: 'GUID'
+                title: 'GUID',
+                sortable: true
             }, {
                 field: 'Name',
                 title: '部门名称',
-                align: 'left'
+                align: 'left',
+                sortable: true
             }, {
                 field: 'ParentName',
                 title: '上级部门'
@@ -72,7 +76,10 @@ var TableInit = function () {
             limit: params.limit,   //页面大小
             offset: params.offset,  //页码
             departmentname: $("#txt_search_departmentname").val(),
-            statu: $("#txt_search_statu").val()
+            statu: $("#txt_search_statu").val(),
+            search: params.search,
+            order: params.order,
+            sort: params.sort
         };
         return temp;
     };
@@ -87,9 +94,7 @@ var ButtonInit = function () {
     oInit.Init = function () {
         //初始化页面上面的按钮事件
         $('#btn_query').on('click', function () {
-            $('#tb_departments').bootstrapTable({
-
-            });
+            $('#tb_departments').bootstrapTable('refresh');
         });
     };
 

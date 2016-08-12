@@ -15,7 +15,7 @@ namespace WebAppHelloWorld.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetDepartment(int limit, int offset, string departmentname, string statu)
+        public JsonResult GetDepartment(int limit, int offset, string departmentname, string statu, string search, string order, string sort)
         {
             var lstRes = new List<Department>();
             for (var i = 0; i < 100; i++)
@@ -28,7 +28,30 @@ namespace WebAppHelloWorld.Controllers
                 oModel.ParentName = "父级部门销售部" + i;
                 lstRes.Add(oModel);
             }
-            lstRes = lstRes.Where(x => x.Name.Contains(departmentname)).Where(x => x.Desc.Contains(statu)).ToList();
+            lstRes = lstRes.Where(x => departmentname == null || x.Name.Contains(departmentname)).Where(x => statu == null || x.Desc.Contains(statu)).Where(x => search == null || x.Name.Contains(search)).ToList();
+            if (order == "asc")
+            {
+                if (sort == "Name")
+                {
+                    lstRes = lstRes.OrderBy(x => x.Name).ToList();
+                }
+                else
+                {
+                    lstRes = lstRes.OrderBy(x => x.ID).ToList();
+                }
+
+            }
+            else
+            {
+                if (sort == "Name")
+                {
+                    lstRes = lstRes.OrderByDescending(x => x.Name).ToList();
+                }
+                else
+                {
+                    lstRes = lstRes.OrderByDescending(x => x.ID).ToList();
+                }
+            }
             var total = lstRes.Count;
             var rows = lstRes.Skip(offset).Take(limit).ToList();
             return Json(new { total = total, rows = rows }, JsonRequestBehavior.AllowGet);
