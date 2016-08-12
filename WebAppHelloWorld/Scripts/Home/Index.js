@@ -22,7 +22,7 @@ var TableInit = function () {
             striped: true,                      //是否显示行间隔色
             cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
             pagination: true,                   //是否显示分页（*）
-            sortable: false,                     //是否启用排序
+            sortable: false,                    //是否启用排序
             sortOrder: "asc",                   //排序方式
             queryParams: oTableInit.queryParams,//传递参数（*）
             sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
@@ -35,16 +35,24 @@ var TableInit = function () {
             showRefresh: true,                  //是否显示刷新按钮
             minimumCountColumns: 2,             //最少允许的列数
             clickToSelect: true,                //是否启用点击选中行
-            height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            height: undefined,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
             uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
+            undefinedText: '-',
+            classes: 'table table-hover table-bordered',
             showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
             detailView: false,                  //是否显示父子表
+            paginationLoop: false,
+            idField: 'ID',
             columns: [{
                 checkbox: true
             }, {
+                field: 'ID',
+                title: 'GUID'
+            }, {
                 field: 'Name',
-                title: '部门名称'
+                title: '部门名称',
+                align: 'left'
             }, {
                 field: 'ParentName',
                 title: '上级部门'
@@ -78,6 +86,11 @@ var ButtonInit = function () {
 
     oInit.Init = function () {
         //初始化页面上面的按钮事件
+        $('#btn_query').on('click', function () {
+            $('#tb_departments').bootstrapTable({
+
+            });
+        });
     };
 
     return oInit;
