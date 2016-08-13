@@ -85,7 +85,7 @@ var TableInit = function () {
             height: undefined,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
             uniqueId: "ID",                     //每一行的唯一标识，一般为主键列
             undefinedText: '-',
-            classes: 'table table-hover table-bordered',
+            classes: 'table table-hover',
             showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
             detailView: true,                  //是否显示父子表
@@ -94,7 +94,10 @@ var TableInit = function () {
             silentSort: false,
             sortName: 'Name',
             columns: [{
-                checkbox: true
+                checkbox: true,
+                visible: true,
+                switchable: false,
+                cardVisible: false
             }, {
                 field: 'ID',
                 title: 'GUID',
@@ -115,11 +118,44 @@ var TableInit = function () {
                 title: '部门级别'
             }, {
                 field: 'Desc',
-                title: '描述'
+                title: '描述',
+                editable: true
             }, ],
             //注册加载子表的事件。注意下这里的三个参数！
             onExpandRow: function (index, row, $detail) {
                 oTableInit.InitSubTable(index, row, $detail);
+            },
+            rowStyle: function (row, index) {
+                //这里有5个取值代表5中颜色['active', 'success', 'info', 'warning', 'danger'];
+                var strclass = "";
+                if (row.Name === "销售部0") {
+                    strclass = 'success';//还有一个active
+                }
+                else if (row.Name === "销售部1") {
+                    strclass = 'danger';
+                }
+                else {
+                    return {};
+                }
+                return { classes: strclass }
+            },
+            onEditableSave: function (field, row, oldValue, $el) {
+                $.ajax({
+                    type: "post",
+                    url: "/Home/Edit",
+                    data: { strJson: JSON.stringify(row) },
+                    success: function (data, status) {
+                        if (status === "success") {
+                            alert("编辑成功");
+                        }
+                    },
+                    error: function () {
+                        alert("Error");
+                    },
+                    complete: function () {
+
+                    }
+                });
             }
         });
     };

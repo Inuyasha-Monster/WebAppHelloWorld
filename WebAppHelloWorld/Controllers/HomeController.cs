@@ -8,36 +8,7 @@ namespace WebAppHelloWorld.Controllers
 {
     public class HomeController : Controller
     {
-        //public static List<Department> GUID ChildDepartment有戏
-
-        // GET: Home
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpGet]
-        public ActionResult GetChildrenMenu(string strParentID)
-        {
-            var lstRes = new List<Department>();
-            for (var i = 0; i < 100; i++)
-            {
-                var oModel = new Department();
-                oModel.ID = Guid.NewGuid().ToString();
-                oModel.Name = "销售部" + i;
-                oModel.Level = i.ToString();
-                oModel.Desc = "暂无描述信息";
-                oModel.ParentName = "父级部门销售部" + i;
-                //ParentID
-                oModel.ParentID = i.ToString();
-                lstRes.Add(oModel);
-            }
-            lstRes = lstRes.Where(x => x.ID == strParentID).ToList();
-            return Json(lstRes, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpGet]
-        public JsonResult GetDepartment(int limit, int offset, string departmentname, string statu, string search, string order, string sort)
+        static HomeController()
         {
             var lstRes = new List<Department>();
             for (var i = 0; i < 100; i++)
@@ -53,16 +24,38 @@ namespace WebAppHelloWorld.Controllers
                 oModel.ParentID = guid;
                 lstRes.Add(oModel);
             }
-            lstRes = lstRes.Where(x => departmentname == null || x.Name.Contains(departmentname)).Where(x => statu == null || x.Desc.Contains(statu)).Where(x => search == null || x.Name.Contains(search)).ToList();
+            Departments = lstRes;
+        }
+
+        private static List<Department> Departments { get; set; }
+
+
+        // GET: Home
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetChildrenMenu(string strParentID)
+        {
+            var departments = Departments.Where(x => x.ID == strParentID).ToList();
+            return Json(departments, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetDepartment(int limit, int offset, string departmentname, string statu, string search, string order, string sort)
+        {
+            var departments = Departments.Where(x => departmentname == null || x.Name.Contains(departmentname)).Where(x => statu == null || x.Desc.Contains(statu)).Where(x => search == null || x.Name.Contains(search)).ToList();
             if (order == "asc")
             {
                 if (sort == "Name")
                 {
-                    lstRes = lstRes.OrderBy(x => x.Name).ToList();
+                    departments = departments.OrderBy(x => x.Name).ToList();
                 }
                 else
                 {
-                    lstRes = lstRes.OrderBy(x => x.ID).ToList();
+                    departments = departments.OrderBy(x => x.ID).ToList();
                 }
 
             }
@@ -70,20 +63,29 @@ namespace WebAppHelloWorld.Controllers
             {
                 if (sort == "Name")
                 {
-                    lstRes = lstRes.OrderByDescending(x => x.Name).ToList();
+                    departments = departments.OrderByDescending(x => x.Name).ToList();
                 }
                 else
                 {
-                    lstRes = lstRes.OrderByDescending(x => x.ID).ToList();
+                    departments = departments.OrderByDescending(x => x.ID).ToList();
                 }
             }
-            var total = lstRes.Count;
-            var rows = lstRes.Skip(offset).Take(limit).ToList();
+            var total = departments.Count;
+            var rows = departments.Skip(offset).Take(limit).ToList();
             return Json(new { total = total, rows = rows }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(string strJson)
+        {
+            var model = Newtonsoft.Json.JsonConvert.DeserializeObject<Department>(strJson);
+            Departments.Single(x => x.ID == model.ParentID).Desc = "fuck";
+            return new HttpStatusCodeResult(System.Net.HttpStatusCode.OK);
         }
     }
 
-    internal class Department
+
+    public class Department
     {
         public string Desc { get; internal set; }
         public string ID { get; internal set; }
