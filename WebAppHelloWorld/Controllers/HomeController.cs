@@ -82,6 +82,12 @@ namespace WebAppHelloWorld.Controllers
             Departments.Single(x => x.ID == model.ParentID).Desc = "fuck";
             return new HttpStatusCodeResult(System.Net.HttpStatusCode.OK);
         }
+
+        [HttpGet]
+        public ViewResult Snake()
+        {
+            return View();
+        }
     }
 
 

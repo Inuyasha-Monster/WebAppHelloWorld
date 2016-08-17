@@ -145,6 +145,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Content Include="Scripts\jquery-1.9.1.min.map" />
+    <Content Include="Views\Home\Snake.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -166,6 +167,9 @@
     <TypeScriptCompile Include="TypeScripts\function.ts" />
     <TypeScriptCompile Include="TypeScripts\interfaceTest.ts" />
     <TypeScriptCompile Include="TypeScripts\NoknownNameInterface.ts" />
+    <TypeScriptCompile Include="TypeScripts\Snake\Draw.ts" />
+    <TypeScriptCompile Include="TypeScripts\Snake\Snake.ts" />
+    <TypeScriptCompile Include="TypeScripts\Snake\SnakeBody.ts" />
     <TypeScriptCompile Include="TypeScripts\student.ts" />
     <TypeScriptCompile Include="TypeScripts\person.ts" />
     <TypeScriptCompile Include="TypeScripts\console.ts" />

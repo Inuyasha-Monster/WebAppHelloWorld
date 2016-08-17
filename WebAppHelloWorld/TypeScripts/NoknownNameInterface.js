@@ -18,4 +18,3 @@ var com;
         _count.num2 = 10;
     })(myfuck = com.myfuck || (com.myfuck = {}));
 })(com || (com = {}));
-//# sourceMappingURL=NoknownNameInterface.js.map

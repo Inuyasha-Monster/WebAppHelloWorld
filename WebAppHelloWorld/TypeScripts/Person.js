@@ -35,4 +35,3 @@ var com;
         test.Person = Person;
     })(test = com.test || (com.test = {}));
 })(com || (com = {}));
-//# sourceMappingURL=person.js.map
