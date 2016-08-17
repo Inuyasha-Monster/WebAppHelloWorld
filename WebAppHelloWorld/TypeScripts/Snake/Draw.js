@@ -98,6 +98,18 @@ var MySnake;
             item.Y = y;
             return item;
         };
+        /**
+         * 检查是否填充
+         * @param p_Table
+         * @param x
+         * @param y
+         */
+        Draw.IsCellFilled = function (p_Table, x, y) {
+            if (p_Table.rows[y].cells[x].style.backgroundColor === "") {
+                return false;
+            }
+            return true;
+        };
         return Draw;
     }());
     MySnake.Draw = Draw;

@@ -89,5 +89,17 @@
             item.Y = y;
             return item;
         }
+        /**
+         * 检查是否填充
+         * @param p_Table
+         * @param x
+         * @param y
+         */
+        static IsCellFilled(p_Table: HTMLTableElement, x: number, y: number): boolean {
+            if ((<HTMLTableCellElement>(<HTMLTableRowElement>p_Table.rows[y]).cells[x]).style.backgroundColor === "") {
+                return false;
+            }
+            return true;
+        }
     }
 }
