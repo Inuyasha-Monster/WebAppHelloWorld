@@ -107,18 +107,21 @@ var MySnake;
                             break;
                         }
                         _this.Direction = MySnake.MoveDirection.Up;
+                        break;
                     case 39:
                         //右箭头
                         if (_this.Direction == MySnake.MoveDirection.left) {
                             break;
                         }
                         _this.Direction = MySnake.MoveDirection.Right;
+                        break;
                     case 40:
                         //下箭头
                         if (_this.Direction == MySnake.MoveDirection.Up) {
                             break;
                         }
                         _this.Direction = MySnake.MoveDirection.Down;
+                        break;
                 }
             };
         }

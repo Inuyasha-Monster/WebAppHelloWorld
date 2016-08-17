@@ -75,19 +75,21 @@
                             break;
                         }
                         this.Direction = MoveDirection.Up;
+                        break;
                     case 39:
                         //右箭头
                         if (this.Direction == MoveDirection.left) {
                             break;
                         }
                         this.Direction = MoveDirection.Right;
+                        break;
                     case 40:
                         //下箭头
                         if (this.Direction == MoveDirection.Up) {
                             break;
                         }
                         this.Direction = MoveDirection.Down;
-
+                        break;
                 }
             }
         }
