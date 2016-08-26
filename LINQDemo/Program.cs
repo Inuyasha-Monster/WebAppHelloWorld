@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -218,21 +219,56 @@ namespace LINQDemo
             //    }
             //}
 
-            List<ClassRoom> crs = new List<ClassRoom>();
-            crs.Add(new ClassRoom { ID = 1, ClassName = "1" });
-            crs.Add(new ClassRoom { ID = 1, ClassName = "2" });
-            crs.Add(new ClassRoom { ID = 2, ClassName = "3" });
-            crs.Add(new ClassRoom { ID = 2, ClassName = "4" });
+            //List<ClassRoom> crs = new List<ClassRoom>();
+            //crs.Add(new ClassRoom { ID = 1, ClassName = "1" });
+            //crs.Add(new ClassRoom { ID = 1, ClassName = "2" });
+            //crs.Add(new ClassRoom { ID = 2, ClassName = "3" });
+            //crs.Add(new ClassRoom { ID = 2, ClassName = "4" });
 
-            (from a in crs
-             group a by a.ID into ga
-             select new { Num = ga.Count() }).ToList().ForEach(x => Console.WriteLine(x.Num));
+            //(from a in crs
+            // group a by a.ID into ga
+            // select new { Num = ga.Count() }).ToList().ForEach(x => Console.WriteLine(x.Num));
 
-            crs.GroupBy(x => x.ID).Select(group => new { Num = group.Count() }).ToList().ForEach(x => Console.WriteLine(x.Num));
+            //crs.GroupBy(x => x.ID).Select(group => new { Num = group.Count() }).ToList().ForEach(x => Console.WriteLine(x.Num));
+
+            #endregion
+
+            #region 反射性能优化
+
+            dynamic math = new MyMath();
+
+            System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            sw.Start();
+
+            for (int i = 0; i < 10000000; i++)
+            {
+                math.Add(1, 2);
+            }
+            sw.Stop();
+            Console.WriteLine("dynamic:耗时{0} ms", sw.ElapsedMilliseconds);
+            sw.Restart();
+
+            var math1 = new MyMath();
+            Expression<Func<int, int, int>> add = (a, b) => math1.Add(a, b);
+            var fuck = add.Compile();
+            for (int i = 0; i < 10000000; i++)
+            {
+                fuck(1, 2);
+            }
+            sw.Stop();
+            Console.WriteLine("expression:耗时{0} ms", sw.ElapsedMilliseconds);
 
             #endregion
 
             Console.ReadKey();
+        }
+    }
+
+    public class MyMath
+    {
+        public int Add(int a, int b)
+        {
+            return a + b;
         }
     }
 
