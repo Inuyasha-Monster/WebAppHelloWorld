@@ -88,6 +88,12 @@ namespace WebAppHelloWorld.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public ActionResult ExportExcel()
+        {
+            return View();
+        }
     }
 
 

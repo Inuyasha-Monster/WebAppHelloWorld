@@ -20,3 +20,4 @@ var MySnake;
     }());
     MySnake.SnakeBody = SnakeBody;
 })(MySnake || (MySnake = {}));
+//# sourceMappingURL=SnakeBody.js.map

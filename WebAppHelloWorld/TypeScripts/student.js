@@ -27,3 +27,4 @@ var com;
         test.Student = Student;
     })(test = com.test || (com.test = {}));
 })(com || (com = {}));
+//# sourceMappingURL=student.js.map

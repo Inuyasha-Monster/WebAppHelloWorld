@@ -5,3 +5,4 @@ var person = (function () {
     };
     return person;
 }());
+//# sourceMappingURL=interfaceTest.js.map

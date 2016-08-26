@@ -131,3 +131,4 @@ var MySnake;
         var snake = new Snake();
     };
 })(MySnake || (MySnake = {}));
+//# sourceMappingURL=Snake.js.map

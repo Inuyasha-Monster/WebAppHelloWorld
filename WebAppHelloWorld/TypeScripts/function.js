@@ -12,3 +12,4 @@ function Add(arg1, arg2) {
 }
 alert(Add(3, 2));
 alert(Add("3", "2"));
+//# sourceMappingURL=function.js.map

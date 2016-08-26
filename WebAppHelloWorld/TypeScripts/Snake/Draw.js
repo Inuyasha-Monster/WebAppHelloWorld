@@ -114,3 +114,4 @@ var MySnake;
     }());
     MySnake.Draw = Draw;
 })(MySnake || (MySnake = {}));
+//# sourceMappingURL=Draw.js.map
