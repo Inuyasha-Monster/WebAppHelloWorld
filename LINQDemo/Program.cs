@@ -122,7 +122,128 @@ namespace LINQDemo
             #endregion
             //五、量词操作 
 
+            #region 六、投影操作
+
+
+            //六、投影操作
+
+            //            标准查询运算符操作方法 - 投影
+            //方法名 说明  C# 查询表达式语法
+            //Select  映射基于转换函数的值。	select
+            //SelectMany  映射基于转换函数的值序列，然后将它们展平为一个序列。	使用多个 from 子句
+
+            //var phrases = new List<string>() { "an apple a day", "the quick brown fox" };
+            //phrases.SelectMany(x => x.Split(' ')).ToList().ForEach(x => Console.WriteLine(x));
+            //Console.WriteLine();
+            //var query = from phrase in phrases
+            //            from word in phrase.Split(' ')
+            //            select word;
+
+            //foreach (var word in query)
+            //{
+            //    Console.WriteLine(word);
+            //}
+
+            //Select() 和 SelectMany() 的工作都是依据源值生成一个或多个结果值。Select() 为每个源值生成一个结果值。因此，总体结果是一个与源集合具有相同元素数目的集合。与之相反，SelectMany() 将生成单一总体结果，其中包含来自每个源值的串联子集合。作为参数传递到 SelectMany() 的转换函数必须为每个源值返回一个可枚举值序列。然后，SelectMany() 将串联这些可枚举序列以创建一个大的序列。
+            #endregion
+
+            #region 七、划分数据
+
+            //            分区序列的标准查询运算符方法
+            //            运算符名称
+
+            //说明
+
+            //C# 查询表达式语法
+
+            //Skip
+
+            //跳过序列中的指定位置之前的元素。
+
+            //X
+            //SkipWhile
+
+            //基于谓词函数跳过元素，直到某元素不再满足条件。
+
+            //X
+            //Take
+
+            //提取序列中的指定位置之前的元素。
+
+            //X
+            //TakeWhile
+
+            //基于谓词函数提取元素，直到某元素不再满足条件。	X
+            #endregion
+
+            #region 八、联接操作
+
+            //List<Student> ss = new List<Student>();
+            //ss.Add(new Student { ClassRoomID = 1 });
+            //ss.Add(new Student { ClassRoomID = 2 });
+            //ss.Add(new Student { ClassRoomID = 3 });
+            //ss.Add(new Student { ClassRoomID = 2 });
+
+            //List<ClassRoom> cc = new List<LINQDemo.ClassRoom>();
+            //cc.Add(new ClassRoom { ID = 2, ClassName = "2班" });
+
+            //(from s in ss
+            // join c in cc on s.ClassRoomID equals c.ID into sc
+            // from d in sc.DefaultIfEmpty(new ClassRoom { ClassName = "null" })
+            // select new { Student = s, ClassName = d.ClassName }).ToList().ForEach(x => Console.WriteLine(x.Student.ClassRoomID + " " + x.ClassName));
+            //Console.WriteLine();
+            //ss.Join(cc, s => s.ClassRoomID, c => c.ID, (s, c) => new { s.ClassRoomID, c.ClassName }).ToList().ForEach(x => Console.WriteLine(x.ClassRoomID + " " + x.ClassName));
+            //Console.WriteLine();
+
+            //var sss = ss.GroupJoin(cc, s => s.ClassRoomID, c => c.ID, (s, ccc) => new { ID = s.ClassRoomID, Num = ccc.FirstOrDefault() }).ToList();
+            //foreach (var item in sss)
+            //{
+            //    Console.WriteLine(item.ID);
+            //    if (item.Num != null) Console.WriteLine(" " + item.Num.ClassName);
+            //}
+
+            #endregion
+
+            #region 九、分组数据
+            //var numbers = new List<int>() { 35, 25, 25, 25, 3987, 4, 199, 329, 446, 208 };
+            //var query = from number in numbers
+            //            group number by number % 2 == 0;
+            //foreach (var item in query)
+            //{
+            //    Console.WriteLine(item.Key ? "偶数" : "奇数");
+
+            //    foreach (var temp in item)
+            //    {
+            //        Console.WriteLine(temp);
+            //    }
+            //}
+
+            List<ClassRoom> crs = new List<ClassRoom>();
+            crs.Add(new ClassRoom { ID = 1, ClassName = "1" });
+            crs.Add(new ClassRoom { ID = 1, ClassName = "2" });
+            crs.Add(new ClassRoom { ID = 2, ClassName = "3" });
+            crs.Add(new ClassRoom { ID = 2, ClassName = "4" });
+
+            (from a in crs
+             group a by a.ID into ga
+             select new { Num = ga.Count() }).ToList().ForEach(x => Console.WriteLine(x.Num));
+
+            crs.GroupBy(x => x.ID).Select(group => new { Num = group.Count() }).ToList().ForEach(x => Console.WriteLine(x.Num));
+
+            #endregion
+
             Console.ReadKey();
         }
+    }
+
+    public class Student
+    {
+        public int ClassRoomID { get; set; }
+    }
+
+    public class ClassRoom
+    {
+        public int ID { get; set; }
+        public string ClassName { get; set; }
     }
 }
