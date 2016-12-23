@@ -13,6 +13,7 @@ namespace WebAppHelloWorld
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            BundleConfig.RegisterBundles(System.Web.Optimization.BundleTable.Bundles);
         }
     }
 }
