@@ -248,7 +248,7 @@ namespace LINQDemo
             Console.WriteLine("dynamic:耗时{0} ms", sw.ElapsedMilliseconds);
             sw.Restart();
 
-            var math1 = new MyMath();
+            var math1 = new MyMath();   
             Expression<Func<int, int, int>> add = (a, b) => math1.Add(a, b);
             var fuck = add.Compile();
             for (int i = 0; i < 10000000; i++)
